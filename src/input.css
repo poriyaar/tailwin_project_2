@@ -3,7 +3,7 @@
 @font-face {
   font-family: sahel;
   font-style: normal;
-  src: url("/dist/fonts/sahel/Sahel-FD.woff") format("woff");
+  src: url("../dist/assets/Sahel-FD-DbUWVUEj.woff") format("woff");
 }
 
 @theme {
