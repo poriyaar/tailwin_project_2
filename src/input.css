@@ -1,9 +1,10 @@
 @import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 @font-face {
   font-family: sahel;
   font-style: normal;
-  src: url("../dist/assets/Sahel-FD-DbUWVUEj.woff") format("woff");
+  src: url("./Sahel-FD.woff") format("woff");
 }
 
 @theme {
@@ -32,4 +33,14 @@
   --color-secondary-800: oklch(0.444 0.177 26.899);
   --color-secondary-900: oklch(0.396 0.141 25.723);
   --color-secondary-950: oklch(0.258 0.092 26.042);
+}
+
+@layer components {
+  .nav-item {
+    @apply text-gray-500 hover:text-gray-900 text-sm relative after:absolute after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:bg-primary-600 after:-bottom-1 after:right-0;
+  }
+
+  .btn-primary {
+    @apply bg-primary-500 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-100 transition-all cursor-pointer;
+  }
 }
