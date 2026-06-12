@@ -1,18 +1,19 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" x-data="darkMode" :class="{ 'dark' : darkMode }">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link href="./dist/output.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="./src/input.css" />
   </head>
-  <body class="font-sahel">
+  <body class="font-sahel dark:bg-gray-900">
     <!-- navbar -->
     <nav
-      class="w-full fixed top-0 left-0 right-0 bg-white/90 border-b border-gray-100 shadow-sm backdrop-blur-sm"
+      x-data="{open: false}"
+      class="w-full fixed top-0 left-0 right-0 bg-white/90 dark:bg-gray-900 border-b border-gray-100 shadow-sm backdrop-blur-sm z-50"
     >
       <div
-        class="container mx-auto md:h-20 px-4 sm:px-6 md:px-8 flex h-16 justify-between items-center"
+        class="container mx-auto md:h-20 px-4 sm:px-6 lg:px-8 flex h-16 justify-between items-center"
       >
         <!-- Logo -->
         <div class="flex items-center cursor-pointer">
@@ -22,11 +23,10 @@
           <div
             class="size-6 bg-secondary-600 rounded-full opacity-100 hover:opacity-75 transition-opacity -mr-2"
           ></div>
-          <div></div>
         </div>
 
         <!-- desktop navigation -->
-        <div class="flex items-center gap-10">
+        <div class="hidden md:flex items-center gap-10">
           <a class="nav-item" href="#">صفحه اصلی</a>
           <a class="nav-item" href="#">خدمات</a>
           <a class="nav-item" href="#">ویژگی ها</a>
@@ -34,25 +34,300 @@
         </div>
 
         <!-- desktop Login/Register Button and dark mode -->
-        <div class="flex items-center gap-4">
-          <div >
-            <button class="py-2 px-3.5 bg-gray-100 rounded-full">
+        <div class="hidden md:flex items-center gap-4">
+          <div>
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'dark'"
+              @click="toDarkMode()"
+            >
               <i class="bi bi-brightness-high-fill"></i>
             </button>
 
-            <!-- <button class="py-2 px-3.5 bg-gray-100 rounded-full">
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'system'"
+              @click="toSystemMode()"
+            >
               <i class="bi bi-moon-fill"></i>
             </button>
 
-            <button class="py-2 px-3.5 bg-gray-100 rounded-full">
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'light'"
+              @click="toLightMode()"
+            >
               <i class="bi bi-display-fill"></i>
-            </button> -->
+            </button>
           </div>
 
           <button class="btn-primary">ورود یا عضویت</button>
         </div>
+
+        <!-- mobile menu (register & login) dark mode button -->
+        <div class="flex md:hidden">
+          <div class="ml-3">
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'dark'"
+              @click="toDarkMode()"
+            >
+              <i class="bi bi-brightness-high-fill"></i>
+            </button>
+
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'system'"
+              @click="toSystemMode()"
+            >
+              <i class="bi bi-moon-fill"></i>
+            </button>
+
+            <button
+              class="py-2 px-3.5 bg-gray-100 rounded-full"
+              x-show="nextMode === 'light'"
+              @click="toLightMode()"
+            >
+              <i class="bi bi-display-fill"></i>
+            </button>
+          </div>
+
+          <button class="cursor-pointer" @click="open = !open">
+            <i class="bi bi-list text-3xl dark:text-white/90"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- mobile navigation -->
+      <div
+        x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform scale-90"
+        x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-90"
+        class="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 py-4"
+      >
+        <div class="px-5 flex flex-col space-y-3">
+          <a
+            href="#"
+            class="text-gray-600 dark:text-white/90 hover:text-gray-900 hover:dark:text-white/90"
+            >صفحه اصلی</a
+          >
+          <a
+            href="#"
+            class="text-gray-600 dark:text-white/90 hover:text-gray-900 hover:dark:text-white/90"
+            >درباره ما</a
+          >
+          <a
+            href="#"
+            class="text-gray-600 dark:text-white/90 hover:text-gray-900 hover:dark:text-white/90"
+            >خدمات</a
+          >
+          <a
+            href="#"
+            class="text-gray-600 dark:text-white/90 hover:text-gray-900 hover:dark:text-white/90"
+            >ویژگی ها</a
+          >
+          <a
+            href="#"
+            class="text-gray-600 dark:text-white/90 hover:text-gray-900 hover:dark:text-white/90"
+            >قوانین</a
+          >
+
+          <button class="btn-primary">عضویت یا ورود</button>
+        </div>
       </div>
     </nav>
     <!-- end of navbar -->
+
+    <!-- Hero -->
+    <section
+      class="relative container mx-auto flex justify-between flex-col md:flex-row items-center pt-30 md:pt-44 pb-6 px-4 sm:px-6 lg:px-8"
+    >
+      <!-- shadow -->
+      <div
+        class="-z-10 absolute -top-28 right-0 w-50 md:w-125 h-125 bg-linear-to-tr from-indigo-500/20 to-pink-500/20 rounded-full blur-[80px]"
+      ></div>
+      <!-- end shadow -->
+
+      <!-- right col -->
+      <div class="w-full md:w-1/2 space-y-8">
+        <div
+          class="bg-gray-50 flex items-center gap-2 w-fit px-4 py-2 rounded-full hover:bg-gray-200 cursor-pointer"
+        >
+          <i class="bi bi-star-fill text-lg text-primary-600 animate-pulse"></i>
+          <span>لورم ایپسوم متن ساختگی</span>
+        </div>
+
+        <h1
+          class="text-lg md:text-xl lg:text-2xl font-bold leading-13 dark:text-white/90"
+        >
+          لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+          <span class="block text-primary-600">
+            با استفاده از طراحان گرافیک است
+          </span>
+          لورم ایپسوم متن ساختگی با تولید سادگی
+        </h1>
+        <p class="text-gray-600 max-w-xl dark:text-white/90">
+          لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
+          از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون
+        </p>
+
+        <div>
+          <input
+            type="email"
+            placeholder="آدرس ایمیل"
+            class="px-6 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all text-gray-600"
+          />
+          <button class="btn-primary mr-2">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- left col -->
+      <div class="w-full md:w-1/2 flex justify-center mt-16 md:mt-0">
+        <img
+          class="w-100 rounded-lg hover:scale-[1.02] transition-transform duration-300"
+          src="./src/images/hero-image.jpg"
+          alt="hero image"
+        />
+      </div>
+    </section>
+    <!-- end of Hero -->
+
+    <!-- company -->
+    <section class="container mx-auto py-20 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center gap-8">
+      <div
+        class="w-62.5 shrink-0 bg-white dark:bg-gray-900 z-10 text-gray-600 dark:text-white/90 border-r-4 border-blue-500 px-5"
+      >
+        لورم ایپسوم متن ساختگی <br />
+        تولید سادگی نامفهوم
+      </div>
+
+      <div class="overflow-hidden">
+      <div class="flex animate-loop">
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="./src/images/logos/amazon.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/meundies.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/sitepoint.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/slack.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/woocommerce.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="./src/images/logos/amazon.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/meundies.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/sitepoint.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/slack.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/woocommerce.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="./src/images/logos/amazon.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/meundies.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/sitepoint.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/slack.png"
+          alt=""
+        />
+        <img
+          class="w-36 h8 object-contain mx-12 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+          src="/src/images/logos/woocommerce.png"
+          alt=""
+        />
+      </div>
+      </div>
+
+    </section>
+    <!-- end company -->
+
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("darkMode", () => ({
+          darkMode: false,
+          nextMode: "",
+          init() {
+            if (
+              localStorage.theme === "dark" ||
+              (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+              this.darkMode = true;
+              this.nextMode = !("theme" in localStorage) ? "light" : "system";
+            } else {
+              this.darkMode = false;
+              this.nextMode = "dark";
+            }
+          },
+          toDarkMode() {
+            localStorage.theme = "dark";
+            this.darkMode = true;
+            this.nextMode = "system";
+          },
+          toLightMode() {
+            localStorage.theme = "light";
+            this.darkMode = false;
+            this.nextMode = "dark";
+          },
+          toSystemMode() {
+            localStorage.removeItem("theme");
+            this.darkMode = window.matchMedia(
+              "(prefers-color-scheme: dark)",
+            ).matches;
+            this.nextMode = "light";
+          },
+        }));
+      });
+    </script>
   </body>
 </html>
